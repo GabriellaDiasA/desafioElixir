@@ -7,17 +7,17 @@ defmodule DesafioElixirAPI.User.Read do
 
   def show_one(uuid) do
     if is_nil(uuid) do
-      :error
+      {:error, "No UUID"}
     end
     case Repo.get(User, uuid) do
-      nil -> {:error, %{result: "Invalid UUID", status: :bad_request}}
+      nil -> {:error, "Invalid UUID"}
       user -> {:ok, user}
     end
   end
 
   def show_all() do
     case Repo.all(User) do
-      nil -> {:error, "No users registered"}
+      [] -> {:error, "No users registered"}
       users -> {:ok, users}
     end
   end

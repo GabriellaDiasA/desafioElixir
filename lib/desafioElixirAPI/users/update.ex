@@ -13,6 +13,6 @@ defmodule DesafioElixirAPI.User.Update do
   end
 
   defp handle_insert({:ok, %User{}} = result), do: result
-  defp handle_insert({:error, result}), do: {:error, %{result: result, status: :bad_request}}
+  defp handle_insert({:error, result}), do: {:error, result}
 
 end

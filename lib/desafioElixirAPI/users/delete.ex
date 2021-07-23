@@ -7,7 +7,7 @@ defmodule DesafioElixirAPI.User.Delete do
 
   def delete(user) do
     case Repo.delete(user) do
-      {:error, _changeset} -> {:error, %{result: "Invalid UUID", status: :bad_request}}
+      {:error, _changeset} -> {:error, "User not found"}
       {:ok, struct} -> {:ok, struct}
     end
   end
