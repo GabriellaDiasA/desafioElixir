@@ -6,7 +6,6 @@ defmodule DesafioElixirAPIWeb.UserControllerTest do
   use DesafioElixirAPIWeb.ConnCase
 
   describe "create/2" do
-
     test "when all params are valid, create a user", %{conn: conn} do
       params = %{
         name: "Nicolle Seraphim5",
@@ -14,15 +13,15 @@ defmodule DesafioElixirAPIWeb.UserControllerTest do
         email: "nicolle.seraphim5@gmail.com.br"
       }
 
-      response = conn
+      response =
+        conn
         |> post(Routes.user_path(conn, :create, params))
         |> json_response(:ok)
 
       assert %{
-        "message" => "user created.",
-        "user" => _user
-      } = response
-
+               "message" => "user created.",
+               "user" => _user
+             } = response
     end
 
     test "when params are invalid, return an error", %{conn: conn} do
@@ -31,17 +30,16 @@ defmodule DesafioElixirAPIWeb.UserControllerTest do
         email: "nicolle.seraphim5@gmail.com.br"
       }
 
-      response = conn
+      response =
+        conn
         |> post(Routes.user_path(conn, :create, params))
         |> json_response(:bad_request)
 
       assert %{
-        "message" => %{
-          "password" => ["can't be blank"]
-        }
-      } = response
-
+               "message" => %{
+                 "password" => ["can't be blank"]
+               }
+             } = response
     end
   end
-
 end

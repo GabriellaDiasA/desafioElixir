@@ -44,6 +44,5 @@ defmodule DesafioElixirAPI.User.UpdateTest do
 
       assert errors_on(changeset) == expected_response
     end
-
   end
 end

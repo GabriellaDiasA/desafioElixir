@@ -14,5 +14,4 @@ defmodule DesafioElixirAPI.Operation.Create do
 
   defp handle_insert({:ok, %Operation{}} = result), do: result
   defp handle_insert({:error, result}), do: {:error, %{result: result, status: :bad_request}}
-
 end

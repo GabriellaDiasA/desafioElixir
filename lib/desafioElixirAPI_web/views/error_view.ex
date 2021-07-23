@@ -21,6 +21,10 @@ defmodule DesafioElixirAPIWeb.ErrorView do
     %{message: translate_errors(changeset)}
   end
 
+  def render("error.json", %{result: message}) when is_binary(message) do
+    %{message: message}
+  end
+
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end

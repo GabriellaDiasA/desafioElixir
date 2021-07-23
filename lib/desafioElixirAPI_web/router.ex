@@ -12,11 +12,7 @@ defmodule DesafioElixirAPIWeb.Router do
   scope "/api", DesafioElixirAPIWeb do
     pipe_through :api
 
-    post "/user", UserController, :create
-    get "/user", UserController, :show_all
-    get "/user/:id", UserController, :show_one
-    put "/user/:id", UserController, :update
-    delete "/user/:id", UserController, :delete
+    resources("/users", UserController, except: [:new, :edit])
 
     post "/operation", OperationController, :create
     get "/operation", OperationController, :show_all

@@ -14,5 +14,4 @@ defmodule DesafioElixirAPI.User.Update do
 
   defp handle_insert({:ok, %User{}} = result), do: result
   defp handle_insert({:error, result}), do: {:error, result}
-
 end
