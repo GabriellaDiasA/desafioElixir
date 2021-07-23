@@ -20,8 +20,8 @@ defmodule DesafioElixirAPI.Operation do
 
   schema "operations" do
     field :amount, :float
-    belongs_to :origin, User, [foreign_key: :origin_id]
-    belongs_to :destination, User, [foreign_key: :destination_id]
+    belongs_to :origin, User, foreign_key: :origin_id
+    belongs_to :destination, User, foreign_key: :destination_id
 
     timestamps()
   end

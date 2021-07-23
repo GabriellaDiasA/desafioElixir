@@ -24,5 +24,4 @@ defmodule DesafioElixirAPI do
   defdelegate read_operation(uuid), to: OperationRead, as: :show_one
   defdelegate edit_operation(operation, params), to: OperationUpdate, as: :update
   defdelegate delete_operation(uuid), to: OperationDelete, as: :delete
-
 end

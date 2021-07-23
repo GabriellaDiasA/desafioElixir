@@ -21,8 +21,8 @@ defmodule DesafioElixirAPI.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :balance, :float, default: 1000.0
-    has_many :origin, Operation, [foreign_key: :origin_id]
-    has_many :destination, Operation, [foreign_key: :destination_id]
+    has_many :origin, Operation, foreign_key: :origin_id
+    has_many :destination, Operation, foreign_key: :destination_id
 
     timestamps()
   end
@@ -37,6 +37,10 @@ defmodule DesafioElixirAPI.User do
     |> validate_format(:email, ~r/@/)
     |> unique_constraint([:email])
     |> add_password_hash()
+  end
+
+  def transaction_changeset(struct \\ %__MODULE__{}, params) do
+
   end
 
   defp add_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do

@@ -24,7 +24,10 @@ defmodule DesafioElixirAPI.User.ReadTest do
 
       {:ok, users} = Read.show_all()
 
-      assert [%User{name: "Gabriella Dias", id: ^user1_id}, %User{name: "Nicolle Seraphim", id: ^user2_id}] = users
+      assert [
+               %User{name: "Gabriella Dias", id: ^user1_id},
+               %User{name: "Nicolle Seraphim", id: ^user2_id}
+             ] = users
     end
 
     test "when there are no users registered, returns an error with a message" do

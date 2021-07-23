@@ -12,7 +12,9 @@ defmodule DesafioElixirAPI.Repo.Migrations.CreateUsersTable do
     end
 
     create unique_index(:users, [:email])
-    create constraint(:users, :balance_must_be_greater_than_or_equal_to_zero, check: "balance >= 0")
-  end
 
+    create constraint(:users, :balance_must_be_greater_than_or_equal_to_zero,
+             check: "balance >= 0"
+           )
+  end
 end
