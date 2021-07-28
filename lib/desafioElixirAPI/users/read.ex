@@ -6,12 +6,14 @@ defmodule DesafioElixirAPI.User.Read do
   alias DesafioElixirAPI.{Repo, User}
 
   def show_one(uuid) do
-    if is_nil(uuid) do
-      {:error, "No UUID"}
-    end
-    case Repo.get(User, uuid) do
-      nil -> {:error, "Invalid UUID"}
-      user -> {:ok, user}
+    with user <- Repo.get(User, uuid),
+         {:ok, _binary} <- Ecto.UUID.dump(uuid) do
+      case user do
+        nil -> {:error, "Invalid UUID"}
+        user -> {:ok, user}
+      end
+    else
+      _ -> {:error, "Invalid UUID"}
     end
   end
 

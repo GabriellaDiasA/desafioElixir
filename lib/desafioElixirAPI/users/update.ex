@@ -7,7 +7,7 @@ defmodule DesafioElixirAPI.User.Update do
 
   def update(user, params) do
     user
-    |> User.changeset(params)
+    |> User.edit_changeset(params)
     |> Repo.update()
     |> handle_insert()
   end

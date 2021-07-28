@@ -13,7 +13,7 @@ defmodule DesafioElixirAPI.User.UpdateTest do
 
   @params2 %{
     name: "Nicolle Seraphim",
-    password: "theotherpassword",
+    password: "thenewpassword",
     email: "nicolle.seraphim@gmail.com"
   }
 

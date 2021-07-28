@@ -31,5 +31,17 @@ defmodule DesafioElixirAPI.Operation do
     |> cast(params, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_number(:amount, greater_than: 0)
+    |> validate_difference(:destination_id)
+  end
+
+  defp validate_difference(changeset, field) when is_atom(field) do
+    origin_id = changeset.changes[:origin_id]
+    validate_change(changeset, field, fn changeset, field ->
+      if field != origin_id do
+        []
+      else
+        [destination_id: "Destination and Origin must be different"]
+      end
+    end)
   end
 end

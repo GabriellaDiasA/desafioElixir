@@ -11,7 +11,11 @@ defmodule DesafioElixirAPI.User do
 
   @primary_key {:id, :binary_id, autogenerate: true}
 
-  @required_fields [:email, :name, :password]
+  @casting_fields [:email, :name, :password, :balance]
+
+  @required_fields_create [:email, :name, :password]
+
+  @required_fields_edit [:email, :name, :password_hash, :balance, :id]
 
   @derive {Jason.Encoder, only: [:id, :email, :name, :password_hash, :balance]}
 
@@ -29,14 +33,25 @@ defmodule DesafioElixirAPI.User do
 
   def changeset(struct \\ %__MODULE__{}, params) do
     struct
-    |> cast(params, @required_fields ++ [:balance])
-    |> validate_required(@required_fields)
+    |> cast(params, @casting_fields)
+    |> validate_required(@required_fields_create)
     |> validate_number(:balance, greater_than_or_equal_to: 0)
     |> validate_length(:password, min: 6)
     |> validate_length(:name, min: 2)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint([:email])
     |> add_password_hash()
+  end
+
+  def edit_changeset(struct, params) do
+    struct
+    |> cast(params, @casting_fields)
+    |> validate_required(@required_fields_edit)
+    |> validate_number(:balance, greater_than_or_equal_to: 0)
+    |> validate_length(:password, min: 6)
+    |> validate_length(:name, min: 2)
+    |> validate_format(:email, ~r/@/)
+    |> unique_constraint([:email])
   end
 
   defp add_password_hash(%Changeset{valid?: true, changes: %{password: password}} = changeset) do

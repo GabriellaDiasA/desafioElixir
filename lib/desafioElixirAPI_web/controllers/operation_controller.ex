@@ -11,36 +11,10 @@ defmodule DesafioElixirAPIWeb.OperationController do
   action_fallback FallbackController
 
   def create(conn, params) do
-    {:ok, origin} = DesafioElixirAPI.read_user(params["origin_id"])
-    if is_nil(params["destination_id"]) do
-      withdrawl(conn, params, origin)
-    else
-      {:ok, destination} = DesafioElixirAPI.read_user(params["destination_id"])
-      transfer(conn, params, destination, origin)
-    end
-  end
-
-  defp transfer(conn, params, destination, origin) do
-    new_destination_balance = destination.balance + params["amount"]
-    new_origin_balance = origin.balance - params["amount"]
-    with {:ok, %User{} = _user} <- DesafioElixirAPI.edit_user(origin, %{"balance" => new_origin_balance}) do
-      DesafioElixirAPI.edit_user(destination, %{"balance" => new_destination_balance})
-      with {:ok, %Operation{} = operation} <- DesafioElixirAPI.create_operation(params) do
-        conn
-        |> put_status(:ok)
-        |> render("create.json", operation: operation)
-      end
-    end
-  end
-
-  defp withdrawl(conn, params, origin) do
-    new_origin_balance = origin.balance - params["amount"]
-    with {:ok, %User{} = _user} <- DesafioElixirAPI.edit_user(origin, %{"balance" => new_origin_balance}) do
-      with {:ok, %Operation{} = operation} <- DesafioElixirAPI.create_operation(params) do
-        conn
-        |> put_status(:ok)
-        |> render("create.json", operation: operation)
-      end
+    with {:ok, %Operation{} = operation} <- DesafioElixirAPI.create_operation(params) do
+      conn
+      |> put_status(:ok)
+      |> render("create.json", operation: operation)
     end
   end
 
