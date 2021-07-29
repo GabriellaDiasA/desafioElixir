@@ -7,6 +7,10 @@
 # General application configuration
 use Mix.Config
 
+config :desafioElixirAPI, DesafioElixirAPI.User.Guardian,
+  issuer: "desafioElixirAPI",
+  secret_key: "GJa5laZR8FVfWujt+bvyyb0/AJgPQyvqM5jkRjFDZ1Uij9Ub2jgTecIccbZxdF5V"
+
 config :desafioElixirAPI,
   ecto_repos: [DesafioElixirAPI.Repo]
 
@@ -29,6 +33,22 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+# Oban
+config :desafioElixirAPI, Oban,
+  plugins: [
+    Oban.Plugins.Pruner,
+    {Oban.Plugins.Cron,
+    crontab: [
+      {"0 0 * * *", DesafioElixirAPI.Operation.Jobs.DailyOperationsSum},
+      {"0 0 * * 0", DesafioElixirAPI.Operation.Jobs.WeeklyOperationsSum},
+      {"0 0 1 * *", DesafioElixirAPI.Operation.Jobs.MonthlyOperationsSum},
+    ]}
+  ],
+  repo: DesafioElixirAPI.Repo,
+  queues: [default: 10]
+
+config :desafioElixirAPI, env: Mix.env()
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

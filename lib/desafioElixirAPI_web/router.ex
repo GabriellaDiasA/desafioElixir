@@ -9,6 +9,10 @@ defmodule DesafioElixirAPIWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug DesafioElixirAPI.User.Pipeline
+  end
+
   scope "/api", DesafioElixirAPIWeb do
     pipe_through :api
 

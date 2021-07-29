@@ -14,9 +14,9 @@ defmodule DesafioElixirAPI.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: DesafioElixirAPI.PubSub},
       # Start the Endpoint (http/https)
-      DesafioElixirAPIWeb.Endpoint
-      # Start a worker by calling: DesafioElixirAPI.Worker.start_link(arg)
-      # {DesafioElixirAPI.Worker, arg}
+      DesafioElixirAPIWeb.Endpoint,
+      # Start Oban
+      {Oban, oban_config()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -30,5 +30,17 @@ defmodule DesafioElixirAPI.Application do
   def config_change(changed, _new, removed) do
     DesafioElixirAPIWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp oban_config do
+    opts = Application.fetch_env!(:desafioElixirAPI, Oban)
+
+    if Code.ensure_loaded?(IEx) and IEx.started?() do
+      opts
+      |> Keyword.put(:crontab, false)
+      |> Keyword.put(:queues, false)
+    else
+      opts
+    end
   end
 end

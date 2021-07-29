@@ -44,7 +44,8 @@ defmodule DesafioElixirAPI.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:bcrypt_elixir, "~> 2.0"},
-      {:guardian, "~> 2.1.2"}
+      {:guardian, "~> 2.1.2"},
+      {:oban, "~> 2.7"}
     ]
   end
 

@@ -20,3 +20,6 @@ config :desafioElixirAPI, DesafioElixirAPIWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Turn Oban off during tests
+config :desafioElixirAPI, Oban, crontab: false, queues: false, plugins: false

@@ -5,6 +5,7 @@ defmodule DesafioElixirAPI.Operation.Create do
 
   alias DesafioElixirAPI.{Repo, Operation, User}
   alias Ecto.Multi
+  alias DesafioElixirAPI.Operation.Jobs.TotalOperationsSum
 
   def create(params) do
     operation_changeset = Operation.changeset(params)
@@ -27,6 +28,7 @@ defmodule DesafioElixirAPI.Operation.Create do
         Multi.new()
         |> Multi.update(:edit_user, User.edit_changeset(user, %{"balance" => new_balance}))
         |> Multi.insert(:create_operation, operation_changeset)
+        |> Multi.run(:worker_routine, fn _repo, params -> apply_job(%{"amount" => params["amount"]}) end)
         |> Repo.transaction()
       {:error, "Invalid UUID"} -> {:error, operation_changeset}
     end
@@ -43,9 +45,22 @@ defmodule DesafioElixirAPI.Operation.Create do
     |> Multi.update(:edit_origin, User.edit_changeset(origin, %{"balance" => new_origin_balance}))
     |> Multi.update(:edit_destination, User.edit_changeset(destination, %{"balance" => new_destination_balance}))
     |> Multi.insert(:create_operation, operation_changeset)
+    |> Multi.run(:worker_routine, fn _repo, params -> apply_job(%{"amount" => params["amount"]}) end)
     |> Repo.transaction()
     else
       _ -> {:error, operation_changeset}
+    end
+  end
+
+  defp apply_job(%{"amount" => amount}) do
+    if Application.get_env(:desafioElixirAPI, :env) != :test do
+      %{"amount" => amount}
+      |> TotalOperationsSum.new()
+      |> Oban.insert()
+
+      {:ok, :ok}
+    else
+      {:ok, :ok}
     end
   end
 end

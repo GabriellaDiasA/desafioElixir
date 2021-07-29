@@ -1,5 +1,5 @@
 defmodule DesafioElixirAPI.User.CreateTest do
-  use DesafioElixirAPI.DataCase
+  use DesafioElixirAPI.DataCase, async: true
 
   alias DesafioElixirAPI.User
   alias DesafioElixirAPI.User.Create
