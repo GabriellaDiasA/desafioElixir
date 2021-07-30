@@ -13,6 +13,11 @@ defmodule DesafioElixirAPI do
   alias DesafioElixirAPI.Operation.Update, as: OperationUpdate
   alias DesafioElixirAPI.Operation.Delete, as: OperationDelete
 
+  alias DesafioElixirAPI.DailySum.Read, as: DailySumRead
+  alias DesafioElixirAPI.WeeklySum.Read, as: WeeklySumRead
+  alias DesafioElixirAPI.MonthlySum.Read, as: MonthlySumRead
+  alias DesafioElixirAPI.QtHourSum.Read, as: QtHourSumRead
+
   defdelegate create_user(params), to: UserCreate, as: :create
   defdelegate read_all_user(), to: UserRead, as: :show_all
   defdelegate read_user(uuid), to: UserRead, as: :show_one
@@ -24,5 +29,10 @@ defmodule DesafioElixirAPI do
   defdelegate read_operation(uuid), to: OperationRead, as: :show_one
   defdelegate edit_operation(operation, params), to: OperationUpdate, as: :update
   defdelegate delete_operation(uuid), to: OperationDelete, as: :delete
+
+  defdelegate read_all_daily(), to: DailySumRead, as: :show_all
+  defdelegate read_all_weekly(), to: WeeklySumRead, as: :show_all
+  defdelegate read_all_monthly(), to: MonthlySumRead, as: :show_all
+  defdelegate read_all_qt_hour(), to: QtHourSumRead, as: :show_all
 
 end

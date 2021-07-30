@@ -5,10 +5,10 @@ defmodule DesafioElixirAPIWeb.OperationView do
 
   use DesafioElixirAPIWeb, :view
 
-  def render("create.json", %{operation: operation}) do
+  def render("create.json", %{multi: multi}) do
     %{
       message: "operation created.",
-      operation: operation
+      multi: multi
     }
   end
 

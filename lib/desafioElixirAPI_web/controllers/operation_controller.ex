@@ -11,10 +11,10 @@ defmodule DesafioElixirAPIWeb.OperationController do
   action_fallback FallbackController
 
   def create(conn, params) do
-    with {:ok, %Operation{} = operation} <- DesafioElixirAPI.create_operation(params) do
+    with {:ok, multi} <- DesafioElixirAPI.create_operation(params) do
       conn
       |> put_status(:ok)
-      |> render("create.json", operation: operation)
+      |> render("create.json", multi: multi)
     end
   end
 

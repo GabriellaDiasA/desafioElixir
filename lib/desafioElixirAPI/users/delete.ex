@@ -3,7 +3,7 @@ defmodule DesafioElixirAPI.User.Delete do
   Handles all user deletions.
   """
 
-  alias DesafioElixirAPI.{Repo, User}
+  alias DesafioElixirAPI.Repo
 
   def delete(user) do
     case Repo.delete(user) do

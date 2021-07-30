@@ -3,7 +3,7 @@ defmodule DesafioElixirAPI.Operation.Delete do
   Handles all operation deletions.
   """
 
-  alias DesafioElixirAPI.{Repo, Operation}
+  alias DesafioElixirAPI.Repo
 
   def delete(operation) do
     case Repo.delete(operation) do

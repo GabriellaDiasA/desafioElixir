@@ -25,6 +25,11 @@ defmodule DesafioElixirAPIWeb.Router do
     post "/operation", OperationController, :create
     get "/operation", OperationController, :show_all
     get "/operation/:id", OperationController, :show_one
+
+    get "/backoffice/daily", BackofficeController, :show_all_daily
+    get "/backoffice/weekly", BackofficeController, :show_all_weekly
+    get "/backoffice/monthly", BackofficeController, :show_all_monthly
+    get "/backoffice/qthour", BackofficeController, :show_all_qt_hour
   end
 
   # Enables LiveDashboard only for development

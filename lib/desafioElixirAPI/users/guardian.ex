@@ -1,8 +1,6 @@
 defmodule DesafioElixirAPI.User.Guardian do
   use Guardian, otp_app: :desafioElixirAPI
 
-  alias DesafioElixirAPI.User
-
   def subject_for_token(user, _claims) do
     {:ok, to_string(user.id)}
   rescue
