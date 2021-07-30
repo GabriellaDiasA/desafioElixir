@@ -30,14 +30,9 @@ defmodule DesafioElixirAPI.Operation.Jobs.GenerateNewOperations do
   end
 
   defp pick_destination(user) do
-    num = Enum.random(0..9)
-    if num > 4 do
-      attempt = pick_user()
-      if attempt != user do
-        attempt
-      else
-        nil
-      end
+    attempt = pick_user()
+    if attempt != user do
+      attempt.id
     else
       nil
     end

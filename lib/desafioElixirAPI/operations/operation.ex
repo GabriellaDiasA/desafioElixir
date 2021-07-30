@@ -16,7 +16,7 @@ defmodule DesafioElixirAPI.Operation do
 
   @optional_fields [:destination_id]
 
-  @derive {Jason.Encoder, only: [:id] ++ @required_fields ++ @optional_fields}
+  @derive {Jason.Encoder, only: [:id, :inserted_at] ++ @required_fields ++ @optional_fields}
 
   schema "operations" do
     field :amount, :float
