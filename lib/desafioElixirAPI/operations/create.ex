@@ -7,6 +7,8 @@ defmodule DesafioElixirAPI.Operation.Create do
   alias Ecto.Multi
   alias DesafioElixirAPI.Operation.Jobs.TotalOperationsSum
 
+  import Ecto.Query
+
   def create(params) do
     operation_changeset = Operation.changeset(params)
 
@@ -29,6 +31,7 @@ defmodule DesafioElixirAPI.Operation.Create do
         |> Multi.update(:edit_user, User.edit_changeset(user, %{"balance" => new_balance}))
         |> Multi.insert(:create_operation, operation_changeset)
         |> Multi.run(:worker_routine, fn _repo, map -> apply_job(map) end)
+        |> Multi.run(:lock_rows, fn _repo, map -> lock_user(map) end)
         |> Repo.transaction()
       {:error, "Invalid UUID"} -> {:error, operation_changeset}
     end
@@ -46,6 +49,7 @@ defmodule DesafioElixirAPI.Operation.Create do
     |> Multi.update(:edit_destination, User.edit_changeset(destination, %{"balance" => new_destination_balance}))
     |> Multi.insert(:create_operation, operation_changeset)
     |> Multi.run(:worker_routine, fn _repo, map -> apply_job(map) end)
+    |> Multi.run(:lock_rows, fn _repo, map -> lock_origin_and_destination(map) end)
     |> Repo.transaction()
     else
       _ -> {:error, operation_changeset}
@@ -56,6 +60,21 @@ defmodule DesafioElixirAPI.Operation.Create do
     %{"amount" => amount}
     |> TotalOperationsSum.new()
     |> Oban.insert()
+    {:ok, :ok}
+  end
+
+  defp lock_user(%{edit_user: %User{id: id}}), do: lock_user(id)
+
+  defp lock_user(id) do
+    user = from(u in User, where: u.id == ^id, lock: "FOR UPDATE")
+    |> Repo.one()
+    {:ok, :ok}
+  end
+
+  defp lock_origin_and_destination(%{edit_origin: %User{id: origin_id}, edit_destination: %User{id: destination_id}}) do
+    lock_user(origin_id)
+    lock_user(destination_id)
+
     {:ok, :ok}
   end
 end

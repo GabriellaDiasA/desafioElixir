@@ -36,10 +36,10 @@ defmodule DesafioElixirAPIWeb.UserController do
 
   def update(conn, params) do
     with {:ok, user} <- DesafioElixirAPI.read_user(params["id"]),
-         {:ok, %User{} = user} <- DesafioElixirAPI.edit_user(user, params) do
+         {:ok, multi} <- DesafioElixirAPI.edit_user(user, params) do
       conn
       |> put_status(:ok)
-      |> render("update.json", user: user)
+      |> render("update.json", multi: multi)
     end
   end
 

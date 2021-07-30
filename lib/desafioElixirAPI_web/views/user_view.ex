@@ -26,10 +26,10 @@ defmodule DesafioElixirAPIWeb.UserView do
     }
   end
 
-  def render("update.json", %{user: user}) do
+  def render("update.json", %{multi: multi}) do
     %{
       message: "user updated.",
-      user: user
+      multi: multi
     }
   end
 
