@@ -1,4 +1,6 @@
-defmodule DesafioElixirAPI.User.Guardian do
+defmodule DesafioElixirAPI.Guardian do
+  alias DesafioElixirAPI.{User, Repo}
+
   use Guardian, otp_app: :desafioElixirAPI
 
   def subject_for_token(user, _claims) do
@@ -8,8 +10,13 @@ defmodule DesafioElixirAPI.User.Guardian do
   end
 
   def resource_from_claims(%{"sub" => id}) do
-    user = DesafioElixirAPI.read_user(id)
-    {:ok, user}
+    case Repo.get(User, id) do
+      user ->
+        {:ok, user}
+
+      nil ->
+        {:error, "User not found"}
+    end
   rescue
     Ecto.NoResultsError -> {:error, :resource_not_found}
   end

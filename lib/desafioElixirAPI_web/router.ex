@@ -10,17 +10,16 @@ defmodule DesafioElixirAPIWeb.Router do
   end
 
   pipeline :auth do
-    plug DesafioElixirAPI.User.Pipeline
+    plug DesafioElixirAPI.Guardian.Pipeline
   end
 
   scope "/api", DesafioElixirAPIWeb do
-    pipe_through :api
+    pipe_through [:api, :auth]
 
-    post "/user", UserController, :create
     get "/user", UserController, :show_all
-    get "/user/:id", UserController, :show_one
     put "/user/:id", UserController, :update
     delete "/user/:id", UserController, :delete
+    get "/user/:id", UserController, :show_one
 
     post "/operation", OperationController, :create
     get "/operation", OperationController, :show_all
@@ -30,6 +29,13 @@ defmodule DesafioElixirAPIWeb.Router do
     get "/backoffice/weekly", BackofficeController, :show_all_weekly
     get "/backoffice/monthly", BackofficeController, :show_all_monthly
     get "/backoffice/qthour", BackofficeController, :show_all_qt_hour
+  end
+
+  scope "/api", DesafioElixirAPIWeb do
+    pipe_through :api
+
+    post "/user", UserController, :create
+    post "/login", SessionController, :create_token
   end
 
   # Enables LiveDashboard only for development

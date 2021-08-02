@@ -7,7 +7,7 @@
 # General application configuration
 use Mix.Config
 
-config :desafioElixirAPI, DesafioElixirAPI.User.Guardian,
+config :desafioElixirAPI, DesafioElixirAPI.Guardian,
   issuer: "desafioElixirAPI",
   secret_key: "GJa5laZR8FVfWujt+bvyyb0/AJgPQyvqM5jkRjFDZ1Uij9Ub2jgTecIccbZxdF5V"
 

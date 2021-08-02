@@ -18,6 +18,9 @@ defmodule DesafioElixirAPI do
   alias DesafioElixirAPI.MonthlySum.Read, as: MonthlySumRead
   alias DesafioElixirAPI.QtHourSum.Read, as: QtHourSumRead
 
+  alias DesafioElixirAPI.Session.Create, as: SessionCreate
+  alias DesafioElixirAPI.Session.Verify, as: SessionVerify
+
   defdelegate create_user(params), to: UserCreate, as: :create
   defdelegate read_all_user(), to: UserRead, as: :show_all
   defdelegate read_user(uuid), to: UserRead, as: :show_one
@@ -34,5 +37,8 @@ defmodule DesafioElixirAPI do
   defdelegate read_all_weekly(), to: WeeklySumRead, as: :show_all
   defdelegate read_all_monthly(), to: MonthlySumRead, as: :show_all
   defdelegate read_all_qt_hour(), to: QtHourSumRead, as: :show_all
+
+  defdelegate create_session(user), to: SessionCreate, as: :generate_token_for_user
+  defdelegate verify_token_ownership(user, token), to: SessionVerify, as: :verify
 
 end

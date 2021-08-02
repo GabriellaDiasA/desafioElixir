@@ -7,6 +7,7 @@ defmodule DesafioElixirAPIWeb.UserController do
 
   alias DesafioElixirAPI.User
   alias DesafioElixirAPIWeb.FallbackController
+  alias DesafioElixirAPI.Guardian
 
   action_fallback FallbackController
 
