@@ -28,7 +28,8 @@ defmodule DesafioElixirAPIWeb.UserController do
   end
 
   def show_one(conn, %{"id" => uuid}) do
-    with {:ok, %User{} = user} <- DesafioElixirAPI.read_user(uuid) do
+    with {:ok, %User{} = user} <- DesafioElixirAPI.read_user(uuid),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn) do
       conn
       |> put_status(:ok)
       |> render("read.json", user: user)
@@ -37,6 +38,7 @@ defmodule DesafioElixirAPIWeb.UserController do
 
   def update(conn, params) do
     with {:ok, user} <- DesafioElixirAPI.read_user(params["id"]),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
          {:ok, multi} <- DesafioElixirAPI.edit_user(user, params) do
       conn
       |> put_status(:ok)
@@ -45,8 +47,9 @@ defmodule DesafioElixirAPIWeb.UserController do
   end
 
   def delete(conn, params) do
-    {:ok, user} = DesafioElixirAPI.read_user(params["id"])
-    with {:ok, %User{} = _user} <- DesafioElixirAPI.delete_user(user) do
+    with {:ok, user} <- DesafioElixirAPI.read_user(params["id"]),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
+         {:ok, %User{} = _user} <- DesafioElixirAPI.delete_user(user) do
       conn
       |> put_status(:ok)
       |> render("delete.json")

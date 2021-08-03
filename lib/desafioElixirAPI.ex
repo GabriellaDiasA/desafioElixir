@@ -39,6 +39,6 @@ defmodule DesafioElixirAPI do
   defdelegate read_all_qt_hour(), to: QtHourSumRead, as: :show_all
 
   defdelegate create_session(user), to: SessionCreate, as: :generate_token_for_user
-  defdelegate verify_token_ownership(user, token), to: SessionVerify, as: :verify
+  defdelegate verify_token_ownership(user, conn), to: SessionVerify, as: :verify
 
 end

@@ -11,7 +11,9 @@ defmodule DesafioElixirAPIWeb.OperationController do
   action_fallback FallbackController
 
   def create(conn, params) do
-    with {:ok, multi} <- DesafioElixirAPI.create_operation(params) do
+    with {:ok, user} <- DesafioElixirAPI.read_user(params["origin_id"]),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
+         {:ok, multi} <- DesafioElixirAPI.create_operation(params) do
       conn
       |> put_status(:ok)
       |> render("create.json", multi: multi)
@@ -35,8 +37,10 @@ defmodule DesafioElixirAPIWeb.OperationController do
   end
 
   def update(conn, params) do
-    {:ok, operation} = DesafioElixirAPI.read_operation(params["id"])
-    with {:ok, %Operation{} = operation} <- DesafioElixirAPI.edit_operation(operation, params) do
+    with {:ok, operation} <- DesafioElixirAPI.read_operation(params["id"]),
+         {:ok, user} <- DesafioElixirAPI.read_user(params["origin_id"]),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
+         {:ok, %Operation{} = operation} <- DesafioElixirAPI.edit_operation(operation, params) do
       conn
       |> put_status(:ok)
       |> render("update.json", operation: operation)
@@ -44,8 +48,10 @@ defmodule DesafioElixirAPIWeb.OperationController do
   end
 
   def delete(conn, params) do
-    {:ok, operation} = DesafioElixirAPI.read_operation(params["id"])
-    with {:ok, %Operation{} = _operation} <- DesafioElixirAPI.delete_operation(operation) do
+    with {:ok, operation} = DesafioElixirAPI.read_operation(params["id"]),
+         {:ok, user} <- DesafioElixirAPI.read_user(params["origin_id"]),
+         :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
+         {:ok, %Operation{} = _operation} <- DesafioElixirAPI.delete_operation(operation) do
       conn
       |> put_status(:ok)
       |> render("delete.json")

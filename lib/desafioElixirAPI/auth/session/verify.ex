@@ -1,11 +1,12 @@
 defmodule DesafioElixirAPI.Session.Verify do
   alias DesafioElixirAPI.Guardian
 
-  def verify(user, token) do
-    with {:ok, claims} <- Guardian.decode_and_verify(token),
+  def verify(user, conn) do
+    with token <- Guardian.Plug.current_token(conn),
+         {:ok, claims} <- Guardian.decode_and_verify(token),
          {:ok, token_user} <- Guardian.resource_from_claims(claims),
          :ok <- compare_users(user, token_user) do
-      {:ok, user}
+      :ok
     else
       _ -> {:error, "Invalid token"}
     end
