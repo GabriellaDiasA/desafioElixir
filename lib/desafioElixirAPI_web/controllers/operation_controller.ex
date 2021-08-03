@@ -49,7 +49,7 @@ defmodule DesafioElixirAPIWeb.OperationController do
 
   def delete(conn, params) do
     with {:ok, operation} = DesafioElixirAPI.read_operation(params["id"]),
-         {:ok, user} <- DesafioElixirAPI.read_user(params["origin_id"]),
+         {:ok, user} <- DesafioElixirAPI.read_user(operation.origin_id),
          :ok <- DesafioElixirAPI.verify_token_ownership(user, conn),
          {:ok, %Operation{} = _operation} <- DesafioElixirAPI.delete_operation(operation) do
       conn
